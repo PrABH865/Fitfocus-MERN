@@ -7,14 +7,18 @@ import Exercises from "./pages/ExercisesByTarget";
 import FitnessVideos from "./pages/FitnessVideos";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
-import AdminLogin from "./components/AdminLogin";
+import AdminLogin from './admin/AdminLogin';
+import MealPlan from "./components/MealPlan";
 
 const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/workouts" element={<Workouts />} />
+
       <Route path="/profile" element={<Profile />} />
+      <Route path="/meals" element={<MealPlan />} />
+      <Route path="/mealPlan/:selectedGoal" element={<MealPlan />} />
       <Route path="/exercise" element={<Exercises />} />
       <Route path="/fitness-videos" element={<FitnessVideos />} />
       <Route path="/signup" element={<Signup />} />

@@ -2,31 +2,34 @@ import React, { useState } from "react";
 
 const videoData = {
   loseWeight: [
-    "UBMk30rjy0o", // 30-Minute Fat Burn Workout - POPSUGAR
-    "ml6cT4AZdqI", // Full Body Workout to Burn Fat
-    "f4dzzv81X9w", // 10 Min Fat Burn Workout at Home
-    "2pLT-olgUJs", // 15 Min Beginner Fat Loss
-    // "VHYHd2z3MYg", // 20-Minute HIIT for Beginners
-    "50kH47ZztHs", // 30-Minute Treadmill Weight Loss Workout
+    "UBMk30rjy0o",
+    "ml6cT4AZdqI",
+    "2pLT-olgUJs",
+    "50kH47ZztHs",
     "digpucxFbMo",
+    "-hSma-BRzoo",
   ],
   gainWeight: [
-    "gMaB-fG4u4g", // Workout for Skinny Guys
-    // "X9V7xR55OU0", // Gain Weight Fast - Bulking
-    // "jZx1M-o7tQI", // Best Diet for Weight Gain
-    // "3Xw-QDc1RrA", // 20 Min Home Workout for Skinny Guys
-    "7L-Td_p0bXE", // Best Foods for Muscle & Weight Gain
-    "vXqHJYz8NXo", // Strength Workout to Build Mass
+    "Mbtl6QxQFtw",
+    "7L-Td_p0bXE",
+    "M6sQGCAtW1c",
+    "fIv6W3TGmio",
+    "nAgZBJ9C3AI",
+    "39AZfptwQi0",
+    "nAgZBJ9C3A",
   ],
   buildMuscle: [
-    "U0bhE67HuDY", // 45 Min Muscle Building
-    "ZMO_XC9w7Lw", // Full Body Strength Training
-    "q20pLhdoEoY", // No Equipment Muscle Workout
-    "H2x3ZbZ9xX8", // Dumbbell Upper Body Strength
-    "V3ExAo8U2o4", // Gym Muscle Gain Routine
-    "0aNNYEUARAk", // Intense Push-Pull-Legs Routine
+    "U0bhE67HuDY",
+    "ZMO_XC9w7Lw",
+    "q20pLhdoEoY",
+    "H2x3ZbZ9xX8",
+    "V3ExAo8U2o4",
+    "0aNNYEUARAk",
   ],
 };
+
+const bgImageUrl =
+  "https://images.unsplash.com/photo-1554284126-aa88f22d8b74?auto=format&fit=crop&w=1470&q=80";
 
 const FitnessVideos = () => {
   const [openDropdown, setOpenDropdown] = useState("");
@@ -37,10 +40,10 @@ const FitnessVideos = () => {
 
   const renderVideos = (ids) =>
     ids.map((id) => (
-      <div key={id} className="w-full md:w-1/2 lg:w-1/3 p-2">
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div key={id} className="w-full md:w-1/2 lg:w-1/3 p-3">
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden transition transform hover:scale-105">
           <iframe
-            className="w-full h-48"
+            className="w-full h-48 md:h-56"
             src={`https://www.youtube.com/embed/${id}`}
             title="Fitness Video"
             allowFullScreen
@@ -50,24 +53,42 @@ const FitnessVideos = () => {
     ));
 
   return (
-    <div className="max-w-7xl mx-auto p-4">
-      {[
-        { label: "I want to lose weight", key: "loseWeight" },
-        { label: "I want to gain weight", key: "gainWeight" },
-        { label: "I want to build muscles", key: "buildMuscle" },
-      ].map(({ label, key }) => (
-        <div key={key} className="mb-6">
-          <button
-            onClick={() => toggleDropdown(key)}
-            className="w-full text-left text-lg font-semibold bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-          >
-            {label}
-          </button>
-          {openDropdown === key && (
-            <div className="flex flex-wrap mt-4">{renderVideos(videoData[key])}</div>
-          )}
-        </div>
-      ))}
+    <div
+      className="min-h-screen w-full bg-cover bg-center px-4 py-8"
+      style={{ backgroundImage: `url(${bgImageUrl})` }}
+    >
+      <div className="max-w-6xl mx-auto bg-white bg-opacity-80 p-6 rounded-xl shadow-xl">
+        <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
+          Choose Your Fitness Goal
+        </h1>
+
+        {[
+          { label: "I want to lose weight", key: "loseWeight" },
+          { label: "I want to gain weight", key: "gainWeight" },
+          { label: "I want to build muscles", key: "buildMuscle" },
+        ].map(({ label, key }) => (
+          <div key={key} className="mb-6">
+            <button
+              onClick={() => toggleDropdown(key)}
+              className="w-full text-left text-xl font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-3 rounded-lg hover:brightness-110 transition-all duration-300"
+            >
+              {label}
+            </button>
+
+            <div
+              className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                openDropdown === key
+                  ? "max-h-[1000px] mt-4 opacity-100"
+                  : "max-h-0 opacity-0"
+              }`}
+            >
+              <div className="flex flex-wrap -m-2">
+                {renderVideos(videoData[key])}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

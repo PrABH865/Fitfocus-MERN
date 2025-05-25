@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { createCookie, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
+import axiosInstance from "../axiosInstance/axiosInstance";
+import MealPlan from "./MealPlan";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -20,6 +22,10 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await registerUser();
+
+    setTimeout(() => {
+      navigate(`/mealPlan/${goal}`);
+    }, 2000);
   };
 
   const successToast = () => {
@@ -42,7 +48,7 @@ const Signup = () => {
 
   const registerUser = async () => {
     try {
-      const response = await axios.post("http://localhost:8000/api/signup", {
+      const response = await axiosInstance.post("/auth/signup", {
         name,
         email,
         password,
@@ -56,10 +62,6 @@ const Signup = () => {
 
       if (response.status === 201) {
         successToast();
-
-        setTimeout(() => {
-          navigate(`/api/dashboard/${role}`);
-        }, 2000);
       } else if (response.status === 409) {
         existingUserToast();
       } else {
@@ -84,10 +86,10 @@ const Signup = () => {
         </div> */}
 
         {/* Form Section */}
-        <div className="w-[50%] lg:w-1/2 p-6 sm:p-8 flex flex-col justify-center ">
-          <h2 className="text-2xl font-bold text-center text-red-600 mb-6">
+        <div className="w-full lg:w-1/2 p-6 sm:p-8 flex flex-col justify-center ">
+          <h1 className="text-3xl w-[26rem] font-bold text-center rounded-2xl p-4 text-red-600 mb-6 bg-amber-200">
             Create an Account
-          </h2>
+          </h1>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 gap-4">
@@ -139,26 +141,26 @@ const Signup = () => {
                 />
               </div>
 
-              <div className=" sm:grid-cols-2 gap-4">
-                <div className="px-2 py-2 border rounded-lg relative">
-                  <label className="px-2 py-2 block text-sm font-medium">
+              <div className="">
+                <div className="w-full px-2 py-2 rounded-lg relative">
+                  <label className=" block text-sm font-medium">
                     Height (cm)
                   </label>
                   <input
                     type="number"
-                    className="px-2 py-2 border rounded-lg relative"
+                    className="px-2 py-2 w-[25.6rem] border rounded-lg relative"
                     value={height}
                     onChange={(e) => setHeight(e.target.value)}
                     required
                   />
                 </div>
-                <div className="px-2 py-2 border rounded-lg absolute  ">
+                <div className="w-full px-2 py-2 rounded-lg relative bg-amber-200">
                   <label className="block text-sm font-medium">
                     Weight (kg)
                   </label>
                   <input
                     type="number"
-                    className=""
+                    className=" px-2 py-2 w-[25.6rem] border rounded-lg"
                     value={weight}
                     onChange={(e) => setWeight(e.target.value)}
                     required
@@ -166,24 +168,38 @@ const Signup = () => {
                 </div>
               </div>
 
-              <div>
+              <div class="text-container">
                 <label className="block text-sm font-medium">
                   Fitness Goal
                 </label>
+
                 <input
                   type="text"
-                  className="w-full p-3 border rounded-lg "
+                  className="w-[25.6rem] p-3 border rounded-lg "
                   value={goal}
                   onChange={(e) => setGoal(e.target.value)}
-                  placeholder="e.g., Lose fat, Build muscle"
-                  required
+                  list="fitnessGoals"
+                  placeholder="Enter Here"
                 />
+
+                <datalist id="fitnessGoals">
+                  <option value="">Select Goal</option>
+                  <option value="weight-loss">Weight Loss</option>
+                  <option value="weight-gain">Weight Gain</option>
+                  <option value="muscle-gain">Muscle Gain</option>
+                  <option value="maintain">Maintain Health</option>
+                </datalist>
+
+                {/* <div className="text-sm font-medium">
+                  {goal && <p>Your fitness goal is: {goal}</p>}
+                </div> */}
+                <button  className="mt-2 bg-blue-500 text-white p-2 rounded-lg">Get Meal Plans</button>
               </div>
 
               <div>
                 <label className="block text-sm font-medium">Gender</label>
                 <select
-                  className="w-full p-3 border rounded-lg "
+                  className="w-[25.6rem] p-3 border rounded-lg "
                   value={gender}
                   onChange={(e) => setGender(e.target.value)}
                   required
@@ -197,22 +213,22 @@ const Signup = () => {
 
               <div>
                 <label className="block text-sm font-medium">
-                  Calories Burned (Optional)
+                  Calories Burned
                 </label>
                 <input
                   type="number"
-                  className="w-full p-3 border rounded-lg "
+                  className="w-[25.6rem] p-3 border rounded-lg "
                   value={caloriesBurned}
                   onChange={(e) => setCaloriesBurned(e.target.value)}
                 />
               </div>
             </div>
-            <button className="w-full bg-green-600 text-white p-3 rounded-lg font-semibold hover:bg-green-700 transition">
+            <button className="w-[26rem] bg-green-600 text-white p-3 rounded-lg font-semibold hover:bg-green-700 transition">
               Sign Up
             </button>
           </form>
 
-          <div className="text-center text-sm mt-6">
+          <div className="text-center text-sm mt-6 flex flex-col items-center">
             Already have an account?{" "}
             <Link
               to="/login"
@@ -223,6 +239,12 @@ const Signup = () => {
           </div>
         </div>
       </div>
+
+      <MealPlan
+                goal={goal}
+                setGoal={setGoal}
+              />
+
       <ToastContainer />
     </div>
   );

@@ -5,6 +5,7 @@ const authRoutes = require("./routes/auth_routes");
 const adminRoutes = require("./routes/admin_routes");
 const profileRoutes = require("./routes/profile_routes");
 const youtubeRoutes = require("./routes/youtube_routes");
+const mealRoutes = require("./routes/meal_routes");
 
 const connectDB = require("./dbConnect/dbConnection");
 const connectAdminDB = require("./dbConnect/adminDB");
@@ -25,6 +26,7 @@ app.use(
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
 app.use("/user", profileRoutes);
+app.use('/mealplan', mealRoutes);
 app.use("/youtube", youtubeRoutes);
 
 // PORT listening and connection to DB

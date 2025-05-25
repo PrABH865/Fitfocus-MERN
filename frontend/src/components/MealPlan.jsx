@@ -1,90 +1,78 @@
-// src/components/MealPlan.jsx
-import React from "react";
-import { Card, CardContent, Typography, Avatar, Box, Grid } from "@mui/material";
-import RestaurantIcon from "@mui/icons-material/Restaurant";
-import BreakfastDiningIcon from "@mui/icons-material/BreakfastDining";
-import LunchDiningIcon from "@mui/icons-material/LunchDining";
-import DinnerDiningIcon from "@mui/icons-material/DinnerDining";
-import EmojiFoodBeverageIcon from "@mui/icons-material/EmojiFoodBeverage";
-
-const mealData = [
-  {
-    id: 1,
-    type: "Breakfast",
-    icon: <BreakfastDiningIcon className="text-orange-500" />,
-    meal: "Oats with berries & almond butter",
-    calories: 350,
-    protein: 18,
-    carbs: 40,
-    fats: 12,
-  },
-  {
-    id: 2,
-    type: "Lunch",
-    icon: <LunchDiningIcon className="text-green-500" />,
-    meal: "Grilled chicken with quinoa & veggies",
-    calories: 500,
-    protein: 35,
-    carbs: 45,
-    fats: 18,
-  },
-  {
-    id: 3,
-    type: "Dinner",
-    icon: <DinnerDiningIcon className="text-purple-500" />,
-    meal: "Salmon with brown rice & greens",
-    calories: 480,
-    protein: 32,
-    carbs: 38,
-    fats: 20,
-  },
-  {
-    id: 4,
-    type: "Snack",
-    icon: <EmojiFoodBeverageIcon className="text-pink-500" />,
-    meal: "Greek yogurt with honey & nuts",
-    calories: 200,
-    protein: 15,
-    carbs: 20,
-    fats: 8,
-  },
-];
+import React, { useState } from "react";
+import axios from "axios";
+import axiosInstance from "../axiosInstance/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 const MealPlan = () => {
-  return (
-    <div className="max-w-6xl mx-auto px-6 py-8">
-      <Typography
-        variant="h4"
-        className="text-center font-bold text-gray-800 mb-10"
-      >
-        🍽 Today's Meal Plan
-      </Typography>
+  const [goal, setGoal] = useState("");
+  const [meals, setMeals] = useState([]); // Ensure meals is always an array
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-      <Grid container spacing={4}>
-        {mealData.map((meal) => (
-          <Grid item xs={12} sm={6} key={meal.id}>
-            <Card className="rounded-2xl shadow-md hover:shadow-lg transition-all">
-              <CardContent className="flex flex-col gap-3">
-                <Box className="flex items-center gap-3">
-                  <Avatar className="bg-gray-100">{meal.icon}</Avatar>
-                  <Typography variant="h6" className="text-gray-700">
-                    {meal.type}
-                  </Typography>
-                </Box>
-                <Typography variant="body2" className="text-gray-600">
-                  {meal.meal}
-                </Typography>
-                <Box className="text-sm text-gray-500 mt-2 flex flex-wrap gap-4">
-                  <span>🔥 {meal.calories} kcal</span>
-                  <span>🥩 {meal.protein}g protein</span>
-                  <span>🍞 {meal.carbs}g carbs</span>
-                  <span>🥑 {meal.fats}g fats</span>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+  // const mealPageNavigate = useNavigate();
+  // const { selectedGoal } = useParams();
+
+  const handleChange = async (e) => {
+    const selectedGoal = e.target.value;
+    setGoal(selectedGoal);
+    setMeals([]);
+    setError("");
+    setLoading(true);
+
+    try {
+      const { data } = await axiosInstance.get(`/mealplan/${selectedGoal}`);
+      // mealPageNavigate(`/mealplan/${selectedGoal}`); // Navigate to the meal plan page
+      setMeals(data.meals || []); // fallback to empty array
+    } catch (err) {
+      console.error(err);
+      setError("Failed to load meal plans. Try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="p-4">
+      <div className="text-container">
+        <label className="block text-sm font-medium">Fitness Goal</label>
+
+        <input
+          type="text"
+          className="w-[25.6rem] p-3 border rounded-lg "
+          value={goal}
+          onChange={handleChange}
+          list="fitnessGoals"
+          placeholder="Enter Here"
+        />
+
+        <datalist id="fitnessGoals">
+          <option value="">Select Goal</option>
+          <option value="weight-loss">Weight Loss</option>
+          <option value="weight-gain">Weight Gain</option>
+          <option value="muscle-gain">Muscle Gain</option>
+          <option value="maintain">Maintain Health</option>
+        </datalist>
+
+      </div>
+
+      {loading && <p className="mt-4">Loading meals...</p>}
+      {error && <p className="mt-4 text-red-500">{error}</p>}
+
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {meals &&
+          meals.map((meal, index) => (
+            <div key={index} className="border rounded p-2 shadow">
+              <h3 className="font-bold">{meal.title}</h3>
+              {meal.image && (
+                <img
+                  src={meal.image}
+                  alt={meal.title}
+                  className="w-full h-40 object-cover"
+                />
+              )}
+            </div>
+          ))}
+      </div>
     </div>
   );
 };

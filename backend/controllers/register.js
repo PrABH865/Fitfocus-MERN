@@ -1,7 +1,7 @@
+const welcomeMail = require("../emails/welcomeEmail");
 const User = require("../models/User");
 const { userValidationSchema } = require("../validations/validationSchema");
 const bcrypt = require("bcryptjs");
-// const welcomeMail = require("../nodemailer/welcomeMail");
 
 const register = async (req, res, next) => {
   console.log(req.body);
@@ -21,6 +21,7 @@ const register = async (req, res, next) => {
       gender,
     } = req.body;
 
+    
     const userVerification = await User.findOne({ email });
 
     if (userVerification) {
@@ -61,7 +62,7 @@ const register = async (req, res, next) => {
 
     await newUser.save();
 
-    // await welcomeMail(email);
+    await welcomeMail(email);
 
     res.status(201).json({
       success: true,

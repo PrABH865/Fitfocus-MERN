@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema(
     },
     goal: {
       type: String,
-      enum: ["Lose", "Gain", "Maintain"],
+      enum: ["weight-loss", "weight-gain", "muscle-gain", "maintain"],
       default: "",
     },
     gender: {
@@ -44,6 +44,21 @@ const userSchema = new mongoose.Schema(
     isLoggedin: {
       type: Boolean,
       default: false,
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    
+    // OTP fields for password reset
+    otp: {
+      type: Number,
+      default: null,
+    },
+
+    otpExpiry: {
+      type: Date,
+      default: null,
     },
   },
   {

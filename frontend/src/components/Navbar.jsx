@@ -1,63 +1,3 @@
-// import React from "react";
-// import Logo from "../assets/FitFocus_logo_100x100.png";
-// import { Link } from "react-router-dom";
-// import LoginPng from ".././assets/pngwing.com.png";
-// import { useAuth } from "../context/AuthContext";
-
-// const Navbar = () => {
-
-//   const { isLoggedIn, login, logout } = useAuth();
-
-//   return (
-//     <div className="nav flex w-full justify-around sticky z-10">
-//       {/* Logo */}
-//       <Link to="/">
-//         <img src={Logo} alt="Logo" className="logo font-extrabold" />
-//       </Link>
-
-//       {/* Navigation Links */}
-//       <div className="flex gap-5 justify-center items-center font-extrabold">
-//         <Link to="/" className="text-[25px] text-red-500 active:text-red-500">
-//           Home
-//         </Link>
-
-//         <Link to="/fitness-videos" className="text-[25px] hover:underline">
-//           Fitness Videos
-//         </Link>
-
-//         <Link to="/exercise" className="text-[25px] hover:underline">
-//           Excercise by target
-//         </Link>
-//       </div>
-
-//       <div className="auth flex h-1/2 relative">
-//         <Link
-//           to="/login"
-//           className="text-[20px] rounded-b-xl p-3 mt-2.5 mr-0 bg-orange-500 text-white font-serif font-bold "
-//         >
-//           <button className="login-btn">Login</button>
-//         </Link>
-
-//         <Link 
-//         to= "/login">
-//          Login
-//         </Link>
-
-
-//         {/* <img src={LoginPng} alt="Avatar" className="relative bottom-0" /> */}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Navbar;
-
-
-
-
-
-
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../assets/FitFocus_logo_100x100.png";
@@ -83,7 +23,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`sticky top-0 z-50 w-full bg-white shadow-md transition-all duration-300 ${
+      className={`sticky top-0 z-50 w-full bg-gray-200 shadow-md transition-all duration-300 ${
         scrolled ? "py-2 shadow-lg" : "py-4"
       }`}
     >
@@ -105,7 +45,10 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex gap-6 items-center font-bold text-2xl">
-          <Link to="/" className="text-red-500 hover:text-red-600">
+          <Link
+            to="/"
+            className="text-red-600 hover:text-red-400 underline-offset-auto"
+          >
             Home
           </Link>
           <Link to="/fitness-videos" className="hover:underline">
@@ -116,6 +59,7 @@ const Navbar = () => {
           </Link>
         </div>
 
+        <Link to="/meals">Meals Plan</Link>
         {/* Auth Buttons (Desktop) */}
         <div className="hidden md:flex items-center gap-4">
           {isLoggedIn ? (
@@ -134,7 +78,7 @@ const Navbar = () => {
             </>
           ) : (
             <Link to="/login">
-              <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-xl">
+              <button className="bg-red-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-xl">
                 Login
               </button>
             </Link>
@@ -162,6 +106,7 @@ const Navbar = () => {
           >
             Fitness Videos
           </Link>
+
           <Link
             to="/exercise"
             onClick={toggleMenu}
@@ -182,7 +127,7 @@ const Navbar = () => {
               <button
                 onClick={() => {
                   logout();
-                  toggleMenu();
+                  setMenuOpen(false);
                 }}
                 className="bg-red-500 text-white px-4 py-2 rounded-xl"
               >

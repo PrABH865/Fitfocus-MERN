@@ -8,7 +8,7 @@ import { useAuth } from "../context/AuthContext";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { isLoggedIn, login, logout } = useAuth();
+  const { login } = useAuth();
 
   const navigate = useNavigate();
 
@@ -32,23 +32,27 @@ const Login = () => {
 
   const loginUser = async () => {
     try {
-      const response = await axiosInstance.post("/login", {
-        email,
-        password,
-      });
+      const response = await axiosInstance.post(
+        "/auth/login",
+        {
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
-      console.log(response.data)
+      console.log(response.data);
 
       if (response.status === 200) {
-        // Save token to localStorage
-        localStorage.setItem("token", response.data.token);
-
-        login()
+        // Save token to localStorage and update context
+        login(response.data.token);
 
         successToast();
 
         setTimeout(() => {
-          navigate("/");
+          navigate("/profile");
         }, 2000);
       } else if (response.status === 404) {
         doesNotExistToast();
@@ -59,16 +63,6 @@ const Login = () => {
       errorToast();
       console.error(error);
     }
-  };
-
-  const handleLogout = () => {
-    logout();
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
-  const handleLogin = () => {
-    login();
-    navigate("/profile");
   };
 
   const handleSubmit = async (e) => {
