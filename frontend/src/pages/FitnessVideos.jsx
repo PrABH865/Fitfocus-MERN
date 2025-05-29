@@ -4,10 +4,10 @@ const videoData = {
   loseWeight: [
     "UBMk30rjy0o",
     "ml6cT4AZdqI",
-    "2pLT-olgUJs",
     "50kH47ZztHs",
     "digpucxFbMo",
     "-hSma-BRzoo",
+    "2pLT-olgUJs",
   ],
   gainWeight: [
     "Mbtl6QxQFtw",

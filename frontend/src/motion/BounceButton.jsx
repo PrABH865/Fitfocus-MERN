@@ -8,7 +8,7 @@ const BounceButton = ({ text }) => (
     initial={{ y: 50, opacity: 0 }}
     animate={{ y: 0, opacity: 1 }}
     transition={{ duration: 0.6, delay: 0.3 }}
-    className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-xl shadow-lg mt-4"
+    className="bg-orange-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-xl shadow-lg mt-4"
   >
     {text}
   </motion.button>

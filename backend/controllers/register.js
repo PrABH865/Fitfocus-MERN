@@ -6,8 +6,8 @@ const bcrypt = require("bcryptjs");
 const register = async (req, res, next) => {
   console.log(req.body);
   try {
-    // const registerValues = await userValidationSchema.validateAsync(req.body);
-    // console.log(registerValues);
+    const registerValues = await userValidationSchema.validateAsync(req.body);
+    console.log(registerValues);
 
     const {
       name,
@@ -19,6 +19,7 @@ const register = async (req, res, next) => {
       weight,
       goal,
       gender,
+      isLoggedin
     } = req.body;
 
     
@@ -43,6 +44,7 @@ const register = async (req, res, next) => {
       caloriesBurned,
       age,
       height,
+      isLoggedin : true,
       weight,
       goal,
       gender,

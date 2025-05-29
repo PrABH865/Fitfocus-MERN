@@ -114,7 +114,7 @@ const Login = () => {
                 autoComplete="current-password"
               />
             </div>
-            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white p-2 rounded transition">
+            <button className="w-full bg-red-600 hover:bg-blue-700 text-white p-2 rounded transition">
               Login
             </button>
           </form>
@@ -129,6 +129,11 @@ const Login = () => {
               <Link to="/admin-login" className="text-blue-600 hover:underline">
                 Admin
               </Link>
+
+              <Link to="/forgot-password" className="text-blue-600 hover:underline ml-4">
+                Forgot Password?
+              </Link>
+
             </div>
           </div>
         </div>

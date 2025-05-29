@@ -13,7 +13,7 @@ createRoot(document.getElementById("root")).render(
       <Router>
         <Navbar />
         <App />
-        <Footer />
+     
       </Router>
     </ExerciseProvider>
   </AuthProvider>

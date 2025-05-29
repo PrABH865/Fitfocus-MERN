@@ -57,9 +57,12 @@ const Navbar = () => {
           <Link to="/exercise" className="hover:underline">
             Exercise by Target
           </Link>
+
+          <Link to="/meals" className="hover:underline">
+            Meals Plan
+          </Link>
         </div>
 
-        <Link to="/meals">Meals Plan</Link>
         {/* Auth Buttons (Desktop) */}
         <div className="hidden md:flex items-center gap-4">
           {isLoggedIn ? (

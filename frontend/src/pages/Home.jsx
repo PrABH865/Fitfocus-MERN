@@ -32,7 +32,7 @@ const Home = () => {
             />
           </h2>
 
-          <h3 className="text-3xl font-bold mb-4 text-orange-400">
+          <h3 className="text-3xl font-bold mb-4 text-red-600">
             ONLINE Fitness PLANNER
           </h3>
 

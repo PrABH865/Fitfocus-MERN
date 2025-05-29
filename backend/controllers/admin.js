@@ -1,14 +1,8 @@
+const getAdminModel = require("../models/Admin");
 const User = require("../models/User");
 
-// Helper: Check if requester is the preset admin
-const isAdmin = (req) =>
-  req.user && req.user.email === "prabhjotsingh6840@gmail.com";
-
 // Admin dashboard stats
-const getAdminStats = async (req, res) => {
-  if (!isAdmin(req)) {
-    return res.status(403).json({ message: "Access denied: Admin only" });
-  }
+const getAdminStats = async (req, res, next) => {
   try {
     const users = await User.find({});
     const totalUsers = users.length;

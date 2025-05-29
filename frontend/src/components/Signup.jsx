@@ -21,29 +21,14 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await registerUser();
+    const isRegistered = await registerUser();
 
-    setTimeout(() => {
-      navigate(`/mealPlan/${goal}`);
-    }, 2000);
-  };
-
-  const successToast = () => {
-    toast.success("User registered successfully", {
-      position: "top-center",
-    });
-  };
-
-  const errorToast = () => {
-    toast.error("User registration failed", {
-      position: "top-center",
-    });
-  };
-
-  const existingUserToast = () => {
-    toast.error("User already exists", {
-      position: "bottom-center",
-    });
+    if (isRegistered) {
+      // Redirect to meal plan after showing toast
+      setTimeout(() => {
+        navigate(`/mealPlan/${goal}`);
+      }, 2000);
+    }
   };
 
   const registerUser = async () => {
@@ -58,20 +43,88 @@ const Signup = () => {
         weight,
         goal,
         gender,
+        isLoggedIn: true,
       });
 
       if (response.status === 201) {
         successToast();
+        return true;
       } else if (response.status === 409) {
         existingUserToast();
+        return false;
       } else {
         errorToast();
+        return false;
       }
     } catch (error) {
       errorToast();
       console.log(error);
+      return false;
     }
   };
+  
+
+  const successToast = () => {
+    toast.success("User registered successfully", {
+      position: "top-center",
+    });
+  };
+
+  const errorToast = () => {
+    toast.error("User registration failed", {
+      position: "top-center",
+    });
+  };
+const isValidEmail = (email) => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z 0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email);
+  }
+
+  const notValidEmail = () => {
+    toast.error("Invalid email format", {
+      position: "top-center",
+      });
+    }
+
+
+  const handleBlur = () => {
+      if (!/\S+@\S+\.\S+/.test(email)) {
+        notValidEmail();
+      }
+  };
+
+  const existingUserToast = () => {
+    toast.error("User already exists", {
+      position: "bottom-center",
+    });
+  };
+
+  // const registerUser = async () => {
+  //   try {
+  //     const response = await axiosInstance.post("/auth/signup", {
+  //       name,
+  //       email,
+  //       password,
+  //       caloriesBurned,
+  //       age,
+  //       height,
+  //       weight,
+  //       goal,
+  //       gender,
+  //     });
+
+  //     if (response.status === 201) {
+  //       successToast();
+  //     } else if (response.status === 409) {
+  //       existingUserToast();
+  //     } else {
+  //       errorToast();
+  //     }
+  //   } catch (error) {
+  //     errorToast();
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-green-500 to-blue-500 px-4">
@@ -87,7 +140,7 @@ const Signup = () => {
 
         {/* Form Section */}
         <div className="w-full lg:w-1/2 p-6 sm:p-8 flex flex-col justify-center ">
-          <h1 className="text-3xl w-[26rem] font-bold text-center rounded-2xl p-4 text-red-600 mb-6 bg-amber-200">
+          <h1 className="text-3xl w-[26rem] font-bold text-center rounded-2xl p-4 text-red-600 mb-6">
             Create an Account
           </h1>
 
@@ -114,6 +167,7 @@ const Signup = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  onBlur={handleBlur}
                 />
               </div>
 
@@ -154,6 +208,7 @@ const Signup = () => {
                     required
                   />
                 </div>
+
                 <div className="w-full px-2 py-2 rounded-lg relative bg-amber-200">
                   <label className="block text-sm font-medium">
                     Weight (kg)
@@ -166,34 +221,36 @@ const Signup = () => {
                     required
                   />
                 </div>
-              </div>
+                <div class="text-container">
+                  <label className="block text-sm font-medium">
+                    Fitness Goal
+                  </label>
 
-              <div class="text-container">
-                <label className="block text-sm font-medium">
-                  Fitness Goal
-                </label>
+                  <input
+                    type="text"
+                    className="w-[25.6rem] p-3 border rounded-lg "
+                    value={goal}
+                    onChange={(e) => setGoal(e.target.value)}
+                    list="fitnessGoals"
+                    placeholder="Enter Here"
+                  />
 
-                <input
-                  type="text"
-                  className="w-[25.6rem] p-3 border rounded-lg "
-                  value={goal}
-                  onChange={(e) => setGoal(e.target.value)}
-                  list="fitnessGoals"
-                  placeholder="Enter Here"
-                />
+                  <datalist id="fitnessGoals">
+                    <option value="">Select Goal</option>
+                    <option value="weight-loss">Weight Loss</option>
+                    <option value="weight-gain">Weight Gain</option>
+                    <option value="muscle-gain">Muscle Gain</option>
+                    <option value="maintain">Maintain Health</option>
+                  </datalist>
+                </div>
 
-                <datalist id="fitnessGoals">
-                  <option value="">Select Goal</option>
-                  <option value="weight-loss">Weight Loss</option>
-                  <option value="weight-gain">Weight Gain</option>
-                  <option value="muscle-gain">Muscle Gain</option>
-                  <option value="maintain">Maintain Health</option>
-                </datalist>
-
-                {/* <div className="text-sm font-medium">
-                  {goal && <p>Your fitness goal is: {goal}</p>}
-                </div> */}
-                <button  className="mt-2 bg-blue-500 text-white p-2 rounded-lg">Get Meal Plans</button>
+                <div className="text-sm font-medium">
+                  {goal && (
+                    <p>
+                      Your fitness goal is: <strong>{goal}</strong>
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div>
@@ -240,10 +297,7 @@ const Signup = () => {
         </div>
       </div>
 
-      <MealPlan
-                goal={goal}
-                setGoal={setGoal}
-              />
+      {/* <MealPlan goal={goal} setGoal={setGoal} /> */}
 
       <ToastContainer />
     </div>

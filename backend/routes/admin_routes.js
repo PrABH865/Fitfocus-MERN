@@ -3,6 +3,7 @@ const { protect } = require("../middlewares/authMiddleware");
 const { adminLogin } = require("../controllers/adminLogin");
 const adminRegister = require("../controllers/registerAdmin");
 const getAdminModel = require("../models/Admin");
+const { protectAdmin } = require("../middlewares/adminMiddleware");
 
 const router = require("express").Router();
 
@@ -26,8 +27,9 @@ router.delete("/delete/:id", async (req, res) => {
       .json({ message: "Error deleting admin", error: err.message });
   }
 });
-router.get("/dashboard", protect, getAdminStats);
 
-router.get("/stats", protect, getAdminStats); // Only accessible if token is valid
+router.get("/dashboard", protectAdmin, getAdminStats);
+
+router.get("/stats", protectAdmin, getAdminStats); // Only accessible if token is valid
 
 module.exports = router;

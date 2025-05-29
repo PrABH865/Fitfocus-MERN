@@ -36,6 +36,27 @@ const Footer = () => {
             </Link>
           </li>
           <li>
+            <Link
+              to="/calorie-calculator"
+              className="hover:text-white transition"
+            >
+              Calorie Calculator
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/workout" className="hover:text-white transition">
+              Workout Generator
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/calorie-needs" className="hover:text-white transition">
+              Calorie Needs
+            </Link>
+          </li>
+
+          <li>
             <Link to="/contact" className="hover:text-white transition">
               Contact
             </Link>

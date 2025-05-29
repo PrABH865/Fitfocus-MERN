@@ -17,13 +17,13 @@ const AdminSignup = () => {
                 <label htmlFor="password">Password</label>
                 <input type="password" id="password" name="password" required />
             </div>
-            <div>
+            {/* <div>
                 <label htmlFor="role">Role</label>
                 <select id="role" name="role" required>
                     <option value="admin">Admin</option>
                     <option value="user">User</option>
                 </select>
-            </div>
+            </div> */}
             <button type="submit">Sign Up</button>
         </form>
     </div>
